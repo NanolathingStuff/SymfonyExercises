@@ -5,3 +5,14 @@ controllers:
 kernel:
     resource: ../src/Kernel.php
     type: annotation
+# ::number --> number is the function name
+app_lucky_number:
+    path: /lucky/number
+    controller: App\Controller\LuckyController::number
+
+app_test:
+    path: /test/test/{page}
+    controller: App\Controller\TestController::index
+    methods:    GET|HEAD
+    defaults:
+        page: 1  

@@ -1,0 +1,137 @@
+ESERCIZI: 
+- replicare codice fiscale in symfony
+    - usare database invece che files
+    - ogni volta che qualcuno genera un codice fiscale --> salvalo (con tutti i dati), data generazione e ip dell'utente
+
+
+REMEMBER TO symfony server:start
+
+symfony console [command]   : list commands/manual
+composer require PACKAGES   :   use packages in project 
+
+config/
+    Contains configuration!. You will configure routes, services and packages. 
+src/
+    All your PHP code lives here. 
+templates/
+    All your Twig templates live here. 
+bin/
+    The famous bin/console file lives here (and other, less important executable files). 
+var/
+    This is where automatically-created files are stored, like cache files (var/cache/) and logs (var/log/). 
+vendor/
+    Third-party (i.e. "vendor") libraries live here! These are downloaded via the Composer package manager. 
+public/
+    This is the document root for your project: you put any publicly accessible files here. 
+
+
+your-project/
+├─ config/
+│  ├─ packages/
+│  ├─ bundles.php
+│  ├─ routes.yaml
+│  └─ services.yaml
+├─ ...
+
+The routes.yaml file defines the routing configuration; the services.yaml file configures the services of the
+service container; the bundles.php file enables/ disables packages in your application.
+
+# config/routes/annotations.yaml : carica pagine usando annotations
+    requires $ composer require doctrine/annotations
+(choose only 1)
+    # config/routes.yaml : carica pagine usando attributes
+    # config/routes.xml : carica pagine usando attributes
+    # config/routes.php : carica pagine usando attributes 
+EXAMPLE:
+    # config/routes.yaml
+    blog_app:   # APP_NAME
+        path:       /blog/{page}    #TODO
+        controller: App\Controller\BlogController::list     # src\Controller\CONTROLLERNAME::FUNCTION_NAME
+        requirements:       # extra parameters (like page numbers)
+            page: '\d+'
+        defaults:
+            page: 1
+        context:    # optionally you can define some arguments passed to the template
+            site_name: 'ACME'
+            theme: 'dark'
+You can declare routes also before a method in the controller (if include 'use Symfony\Component\Routing\Annotation\Route;'):
+1   -/**
+     * METHODNAME
+     * 
+     * @Route("/FOLDER/PATH", name="NAME")
+     */
+2   - #[Route('/FOLDER/PATH', name:"NAME")]
+attibute {$NAME} must be the same as route, passables as:
+    -
+
+php bin/console debug:router    in the project path: show all routes
+There are options to dynamically change routes
+    Remember to check if exists,    throw RouteNotFoundException is cheaper that search in all available routes
+
+In Symfony, a CONTROLLER is usually a class method which is used to accept requests, and return a Response object. 
+    When mapped with a URL, a controller becomes accessible and its response can be viewed. 
+The generateUrl() method is just a helper method that generates the URL for a given route:
+    $url = $this->generateUrl($Route, [*$args]);
+If you want to redirect the user to another page, use the redirectToRoute() and redirect() methods:
+    $this->redirectToRoute($Route);
+If you're serving HTML, you'll want to render a template. The render() method renders a template and puts that content into a Response object for you
+GENERATE controller by:
+    php bin/console make:controller NewControllerName
+    php bin/console make:crud ProductName
+
+Symfony provides a session object that you can use to store information about the user between requests. Session is enabled by default, but will only be started if you read or write from it.
+
+The TWIG templating language allows you to write concise, readable templates that are more friendly to web designers 
+Basically an HTML file (You can't run PHP code inside Twig templates), but:
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Welcome to Symfony!</title>
+    </head>
+    <body>
+        <h1>{{ page_title }}</h1>
+
+        {% if user.isLoggedIn %}
+            Hello {{ user.name }}!
+        {% endif %}
+
+        {# ... #}
+    </body>
+</html>
+    {{ ... }}, used to display the content of a variable or the result of evaluating an expression;
+    {% ... %}, used to run some logic, such as a conditional or a loop;
+    {# ... #}, used to add comments to the template (unlike HTML comments, these comments are not included in the rendered page).
+
+You can reference environment variables using the special syntax %env(ENV_VAR_NAME)%. The values of these options are resolved at runtime.
+Enviroments in config/packages/{ENV}/framework.yaml
+You can also define options for different environments in a single configuration file using the special when@ENV keyword
+php bin/console debug:dotenv    : show ENV variables and active environment
+
+This is a simplified overview of the request workflow in Symfony applications:
+
+1    The user asks for a resource in a browser;
+2    The browser sends a request to the server;
+3    Symfony gives the application a Request object;
+4    The application generates a Response object using the data of the Request object;
+5    The server sends back the response to the browser;
+6    The browser displays the resource to the user.
+
+If you are using PHP 8.0 or later, you can use the #[When] PHP attribute to only register the class as a service in some environments:
+#[When(env: 'dev')]
+class SomeClass{...}
+
+#[When(env: 'dev')]
+#[When(env: 'test')]
+class AnotherClass{...}
+
+The most common way to listen to an event is to register an event listener: https://symfony.com/doc/current/event_dispatcher.html
+Then you must register it as a service and notify Symfony that it is a "listener" on the kernel.exception event by using a special "tag":
+
+# config/services.yaml
+services:
+    App\EventListener\ExceptionListener:
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception }
+
+In Symfony versions prior to 4.0, it was recommended to organize your own application code using bundles. This is no longer recommended and bundles should only be used to share code and features between multiple applications.
+Bundles used in your applications must be enabled per environment in the file: config/bundles.php 
