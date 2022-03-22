@@ -135,3 +135,18 @@ services:
 
 In Symfony versions prior to 4.0, it was recommended to organize your own application code using bundles. This is no longer recommended and bundles should only be used to share code and features between multiple applications.
 Bundles used in your applications must be enabled per environment in the file: config/bundles.php 
+
+in /PROJECT_NAME/config/packages/twig.yaml you can defin global variables under "globals:"
+
+DATABASES
+CREATE:
+    - install packages:
+        composer require symfony/orm-pack
+        composer require --dev symfony/maker-bundle
+    - modify environment {/home/nanolathingstuff/demo_project/.env}
+        uncomment DATABASE_URL line based on what DB type you prefer
+        modify variable (name, password, port, charset, ...)
+    - symfony console doctrine:database:create
+        (sudo service mysql start) {i lost 1h for this shit}
+DELETE:
+    symfony console doctrine:database:drop

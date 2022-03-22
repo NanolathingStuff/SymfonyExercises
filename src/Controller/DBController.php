@@ -12,7 +12,8 @@ class DBController extends AbstractController{
     public function index(): Response {
         //path to page to render, use single quotes (' ') for variables
         return $this->render('db/database.html.twig', [
-            'title' => '',
+            'title' => 'Movie',
         ]);
     }
+    //connect to DATABASE_URL="mysql://root:password54321@127.0.0.1:3306/fiscal_code?serverVersion=5.7&charset=utf8mb4"
 }

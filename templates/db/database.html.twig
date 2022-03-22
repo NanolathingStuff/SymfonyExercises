@@ -1,5 +1,8 @@
 {# database test rendering page #}
-{% block title %}Hello TestController!{% endblock %}
+{# {% extends "base.html.twig" %}  to use base.html.twig as base #}
+{% block title %}
+    <h2>Page name: {{_self}}, charset: {{_charset}}</h2>
+{% endblock %}
 
 {% block body %}
 
