@@ -1,6 +1,6 @@
 ESERCIZI: 
 - replicare codice fiscale in symfony
-    - usare database invece che files
+    + usare database invece che files
     - ogni volta che qualcuno genera un codice fiscale --> salvalo (con tutti i dati), data generazione e ip dell'utente
     - sistema problemi di eredtarietà
         -quest sistema CSS
@@ -160,6 +160,7 @@ CREATE:
         modify variable (name, password, port, charset, ...)
     - symfony console doctrine:database:create
         sudo service mysql start
+        If you prefer to add new properties manually, php bin/console make:entity --regenerate command can generate the getter & setter methods for you
 DELETE:
     symfony console doctrine:database:drop
 USE:

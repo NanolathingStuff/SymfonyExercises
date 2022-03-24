@@ -6,13 +6,23 @@
 
 {% block body %}
 
-<div class="example-wrapper">
-{# conditional statement using % (remember spaces) #}
-    {% if title %}
-        <h1> Passed: {{ title }} </h1>
-    {% else %}
-        <p>No parameter passed</p>
-    {% endif %}
-</div>
+{% if error %}
+    <h1> ERROR: {{ error }} </h1>
+{% else %}
+    <div class="example-wrapper">
+    {# conditional statement using % (remember spaces) #}
+        {% if title %}
+            <h1> Passed: {{ title }} </h1>
+
+            {% for key, value in results %}
+                Key : {{ key }}
+                Value : {{ value }}
+            {% endfor %}
+
+        {% else %}
+            <p>No parameter passed</p>
+        {% endif %}
+    </div>
+ {% endif %}
 {% endblock %}
 

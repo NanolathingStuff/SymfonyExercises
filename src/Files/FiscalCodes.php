@@ -1,9 +1,10 @@
 <?php
+namespace App\Files;
 
-class CodeContainer{
+class FiscalCode{
     // constant tables    
-    private const monthCode = array('1' => 'A', '2' => 'B', '3' => 'C', '4' => 'D', '5' => 'E', '6' => 'H', '7' => 'L',
-        '8' => 'M', '9' => 'P', '10' => 'R', '11' => 'S', '12' => 'T'); 
+    private const monthCode = array('01' => 'A', '02' => 'B', '03' => 'C', '04' => 'D', '05' => 'E', '06' => 'H', '07' => 'L',
+        '08' => 'M', '09' => 'P', '10' => 'R', '11' => 'S', '12' => 'T'); 
 
     private const oddTables = array(0 => 1, 1 => 0, 2 => 5, 3 => 7, 4 => 9, 5 => 13, 6 => 15, 7 => 17, 8 => 19, 9 => 21, 'A' => 1,
         'B' => 0, 'C' => 5, 'D' => 7, 'E' => 9, 'F' => 13, 'G' => 15, 'H' => 17, 'I' => 19, 'J' => 21, 'K' => 2,
@@ -69,7 +70,7 @@ class CodeContainer{
                     $sum+=(count(range('A', $string[$i]))-1);   //alphabet lentgh
                 }
             }else{  //odd
-                $sum+=CodeContainer::oddTables[$string[$i]];
+                $sum+=FiscalCode::oddTables[$string[$i]];
             }
         } //Now, values obtained from the odd and even characters strings are summed and the result
         //is divided by 26; the reminder of the division will be converted in the control code, using the table:
@@ -111,35 +112,36 @@ class CodeContainer{
      // main function
     public function calculate_code(){
         //control errors: all parameters required
-        if($_POST['surname'] == '' || $_POST['name'] == ''|| $_POST['year'] == 0 || $_POST['month'] == 0 ||
-            $_POST['day'] == 0 || $_POST['born_place'] == '' ||$_POST['province'] == ''){
-                throw new Exception("Error: missing parameter!");
+        if($this->getSurname() == '' || $this->getName() == ''|| $this->getYear() == '' || $this->getMonth() == '' ||
+            $this->getDay() == '' || $this->getCity() == '' || $this->getProvince() == ''){
+                return '';//throw new \Exception("Error: missing parameter!");  //TODO fix this
         }//else
         if(preg_match("/[^a-zA-Z\s]/", $this->getName())){
-            throw new Exception("Error: invalid name");
+            return '';//throw new \Exception("Error: invalid name");    //TODO fix this
         }
         if(preg_match("/[^a-zA-Z\s]/", $this->getSurname())){
-            throw new Exception("Error: invalid surname");
-        }
+            return '';//throw new \Exception("Error: invalid surname"); //TODO fix this
+        }   
         $tmp = '';
         
         $tmp .= $this->name_code($this->getSurname(), true);  //First 3 letters are taken by the surname (generally first, second and third consonant)
         $tmp .= $this->name_code($this->getName());  //Second 3 letters fom the name (generally first, third and fourth consonant)         
         $tmp .= substr($this->getYear(), -2);  // the last 2 numbers of the birth year
-        $tmp .= CodeContainer::monthCode[$this->getMonth()];   // the letter corresponding to the month (A = Gennaio, B, C, D, E, H, L, M, P, R, S, T = Dicembre)
-        if($this->getGender()  == "Male") { // the birth day: 
-            if ($this->getDay()<10)  //in case of female sex, 40 is added to that number
-                $tmp .= '0';    //if the day is included between 1 and 9 a 0 is added at the beginning
+        $tmp .= FiscalCode::monthCode[$this->getMonth()];   // the letter corresponding to the month (A = Gennaio, B, C, D, E, H, L, M, P, R, S, T = Dicembre)
+        //Gender is passed as 'False' = 'Male', 'True' = 'Female'
+        if($this->getGender()  == False) { // the birth day: 
+            //if ($this->getDay()<10)  //in case of female sex, 40 is added to that number
+            //DONE automatically    $tmp .= '0';    //if the day is included between 1 and 9 a 0 is added at the beginning
             $tmp .= strval($this->getDay());  //TOSTRING     
         } else{ 
             $tmp .= strval($this->getDay() + 40);
         }
-        $townCode = $this->codice_comune($this->getCity(), $this->getProvince());
+        $townCode = ''; //$this->codice_comune($this->getCity(), $this->getProvince());
         $tmp .= $townCode;  //Codice Belfiore of the town (4 characters)
         if ($townCode === 0){   //error
-            throw new Exception("Error: File not found");
+            throw new \Exception("Error: File not found"); //TODO fix this
         }elseif ($townCode === 1){   //error
-            throw new Exception("Error: Codice Comune not found");
+            throw new \Exception("Error: Codice Comune not found"); //TODO fix this
         }else{
             $tmp = strtoupper($tmp);    //array-dict has only uppercase letters
             $tmp .=  $this->control_code($tmp); // Control character, to verify if the code is calculated correctly.
