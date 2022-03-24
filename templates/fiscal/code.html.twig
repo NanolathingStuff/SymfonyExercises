@@ -1,0 +1,27 @@
+{# /templates/subscriber/show.html.twig 
+{% extends "base.html.twig" %}
+#}
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="/css/FiscalCode.css" /> 
+{% endblock %}
+
+{% block body %}
+
+    <H1>Calcola il tuo codice fiscale!</H1>
+    <div id="input_card">
+
+            <div class="card_text">
+                <p style="font-size: 1.5em;">Calcolo Codice Fiscale </p>
+                <p style="font-size: 1.0em;">Calcola il codice fiscale online</p>
+            </div>
+
+        {% if valid %}
+            <p> Passed: {{ valid }} </p>
+            {# TODO #}
+        {% endif %}
+
+        {{ form(fiscal_form) }}   
+
+    </div>
+    
+{% endblock %}

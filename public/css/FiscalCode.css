@@ -1,0 +1,51 @@
+* { 
+    padding: 0;
+    margin: 0;
+}
+html {
+    background:#000;
+    height:100%;
+}
+body{
+    color: green;
+    height:100%;
+}
+.input{
+    margin-top: 14px;
+}
+#input_card{
+    background-color: white;
+    width: 40%;
+    min-width: 550px;   
+    height: 250px;   
+    padding-bottom: 60%;
+    position:absolute;
+    left:30%;
+    top:20%;
+    /* Card's borders */   
+    border: 2px solid #EEE;
+    border-radius: 25px;
+    padding: 4px; 
+}
+div.card_text{  /* TOP of the card */
+    color: #ffffff;
+    background-color: #1fa82b;
+    text-align: right;
+    /* Card's borders */ 
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
+    padding: 2px; 
+}
+
+#submit{
+    font-size: 1.5em;
+    width: 100%;
+    height: 40px;  
+    color: #ffffff;
+    background-color: #169921;
+    position:absolute;
+    border-bottom-left-radius: 25px;
+    border-bottom-right-radius: 25px;
+    bottom:0;   
+    right: 0.15%;    
+}

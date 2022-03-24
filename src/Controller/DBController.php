@@ -10,6 +10,15 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class DBController extends AbstractController{
     #[Route('/db/database', name:"DB", methods: ['GET', 'HEAD'])]
     public function index(): Response {
+        $file = "/home/nanolathingstuff/lampstack-8.1.1-0/apache2/htdocs/demo/src/codes/listacomuni.csv";
+        $query = "LOAD DATA INFILE '".$file."'
+        INTO TABLE listacomuni
+        FIELDS TERMINATED BY ','
+        OPTIONALLY ENCLOSED BY '\"' 
+        LINES TERMINATED BY ',,,\r\n'
+        IGNORE 1 LINES 
+        (Comune, Provincia, CodFisco)";
+
         //path to page to render, use single quotes (' ') for variables
         return $this->render('db/database.html.twig', [
             'title' => 'Movie',

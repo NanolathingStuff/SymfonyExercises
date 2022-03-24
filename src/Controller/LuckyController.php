@@ -3,7 +3,6 @@
 namespace App\Controller;
 //DEMO https://symfony.com/doc/current/page_creation.html
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class LuckyController extends AbstractController

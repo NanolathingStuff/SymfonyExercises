@@ -2,7 +2,8 @@ ESERCIZI:
 - replicare codice fiscale in symfony
     - usare database invece che files
     - ogni volta che qualcuno genera un codice fiscale --> salvalo (con tutti i dati), data generazione e ip dell'utente
-
+    - sistema problemi di eredtarietà
+        -quest sistema CSS
 
 REMEMBER TO symfony server:start
 
@@ -64,6 +65,8 @@ You can declare routes also before a method in the controller (if include 'use S
 attibute {$NAME} must be the same as route, passables as:
     -
 
+PER QUALUNQUE COSA TU RITENGA SACRO: NON DUPLICARE I NOMI: name="NAME"; "NAME" must be univocal 
+
 php bin/console debug:router    in the project path: show all routes
 There are options to dynamically change routes
     Remember to check if exists,    throw RouteNotFoundException is cheaper that search in all available routes
@@ -102,6 +105,8 @@ Basically an HTML file (You can't run PHP code inside Twig templates), but:
     {% ... %}, used to run some logic, such as a conditional or a loop;
     {# ... #}, used to add comments to the template (unlike HTML comments, these comments are not included in the rendered page).
 
+CSS and other links starts from 'public' folder
+
 You can reference environment variables using the special syntax %env(ENV_VAR_NAME)%. The values of these options are resolved at runtime.
 Enviroments in config/packages/{ENV}/framework.yaml
 You can also define options for different environments in a single configuration file using the special when@ENV keyword
@@ -138,6 +143,13 @@ Bundles used in your applications must be enabled per environment in the file: c
 
 in /PROJECT_NAME/config/packages/twig.yaml you can defin global variables under "globals:"
 
+FORMS
+- Entities:
+    It's a normal PHP object that directly solves a problem inside your application 
+    (i.e. the need to represent a task in your application). But you can also edit Doctrine entities in the same way.
+- Type:
+    in src/Form/Type/ you have to define the Form
+
 DATABASES
 CREATE:
     - install packages:
@@ -147,6 +159,10 @@ CREATE:
         uncomment DATABASE_URL line based on what DB type you prefer
         modify variable (name, password, port, charset, ...)
     - symfony console doctrine:database:create
-        (sudo service mysql start) {i lost 1h for this shit}
+        sudo service mysql start
 DELETE:
     symfony console doctrine:database:drop
+USE:
+    symfony console make:migration  : to use the created tables (src/Entity/CLASSES.php) 
+    symfony console doctrine:migrations:migrate : to initialize the created tables (src/Entity/CLASSES.php) 
+    symfony console make:form NAMEFormType TABLE : to create a form based on entity
