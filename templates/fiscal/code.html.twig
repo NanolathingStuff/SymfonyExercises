@@ -11,17 +11,135 @@
     <div id="input_card">
 
             <div class="card_text">
-                <p style="font-size: 1.5em;">Calcolo Codice Fiscale </p>
-                <p style="font-size: 1.0em;">Calcola il codice fiscale online</p>
+                <p style="font-size: 1.5em; margin-right: 3px;">Calcolo Codice Fiscale </p>
+                <p style="font-size: 1.0em; margin-right: 3px;">Calcola il codice fiscale online</p>
             </div>
 
         {% if valid %}
-            <p> Passed: {{ valid }} </p>
-            {# TODO #}
+            <H3>CODICE FISCALE:  {{ valid }} </H3>
         {% endif %}
 
-        {{ form(fiscal_form) }}   
+        {#  Customizable {{ form(fiscal_form) }}   #}
+        {{ form_start(fiscal_form) }}
+            <div class="my-custom-class-for-errors">
+                {{ form_errors(fiscal_form) }}
+            </div>
 
+            <div class="row">
+             {#  'attr': { 'class': 'control-label' } }): form.css for enlarge text box #}
+                <div class="col">
+                    {{ form_row(fiscal_form.surname, { 'attr': { 'class': 'control-label' } }) }}
+                </div>
+                <div class="col">
+                    {{ form_row(fiscal_form.name, { 'attr': { 'class': 'control-label' } }) }}
+                </div>
+                <div class="col">
+                    {{ form_row(fiscal_form.born_place, { 'attr': { 'class': 'control-label' } }) }}
+                </div>
+                <div class="col" id="multy_row_form">
+                {% if help is defined %}    {# TODO? #}
+                    <p class="help-block">{{ help }}</p>
+                {% endif %}
+                    {{ form_label(fiscal_form.province) }}{{ form_widget(fiscal_form.province, { 'attr': { 'class': 'half-box' } }) }}
+                    {{ form_label(fiscal_form.gender) }}{{ form_widget(fiscal_form.gender) }}
+                </div>
+                {#<div class="col">
+                    {{ form_row(fiscal_form.birth_day) }}
+                </div>
+                <div class="col">
+                    {{ form_row(fiscal_form.submit) }}
+                </div>#}
+                <div class="col" id="submit">
+                    {{ form_row(fiscal_form.submit, { 'attr': { 'class': 'submit' }} ) }}
+                </div>
+                {{ form_rest(fiscal_form) }}   {#  autocomplete form   #}
+            </div>
+        {{ form_end(fiscal_form) }}
+    
     </div>
     
 {% endblock %}
+
+{#
+require_once "../classes/FiscalCodes.php";
+    require_once "../utils/DatePickers.php";
+    $valid = false; //variable to make the code appear if true
+    $error = false;  //variable to make the body change color if true
+    //tieni solo valid e codice
+    if(isset($_POST['submit']) ){
+        $valid = true;  //show 
+        try { 
+            $container = new CodeContainer($_POST['surname'], $_POST['name'], $_POST['formGender'], $_POST['year'],
+                $_POST['month'], $_POST['day'], $_POST['born_place'], $_POST['province']);
+            $codice = $container->calculate_code();
+            
+        }catch(Exception $e) {
+            $valid = false;  //hide if error 
+            $error = true;
+            echo '<H1>'.'Message: ' .$e->getMessage().'</H1>';
+            //var_dump($error);
+        }
+    }
+
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Copy of http://www.codicefiscaleonline.com/ </title>
+<link rel="stylesheet" type="text/css" href="../css/CodiceFiscale.css">
+</head>
+<body style="background-color:<?php echo $error? "#ff9999":"#00ffcc" ?>">
+
+    <form method="post"> 
+
+        <div id="input_card" style="height:<?php echo ($valid) ? 280 : 260; ?>px">
+
+        <!-- NO INPUT, hide and show codice -->
+
+            <div class="card_text">
+                <p style="font-size: 1.5em;">Calcolo Codice Fiscale </p>
+                <p style="font-size: 1.0em;">Calcola il codice fiscale online</p>
+            </div>
+            <?php if ($valid) : ?>
+                <h3>CODICE FISCALE: <?php echo $codice ?></h3>
+            <?php endif; ?>
+             <!-- INPUT ZONE -->
+            <p class="input">
+                COGNOME:
+                <input type="text" id="surname" name="surname" size="50" maxlength="40">
+            </p>
+            <p class="input">
+                NOME:
+                <input type="text" id="name" name="name" size="40" maxlength="30">
+                SESSO:
+                <select name="formGender">  
+                    <option value="Male">M</option>
+                    <option value="Female">F</option>  
+                </select> 
+            </p>
+            <p class="input">
+                LUOGO DI NASCITA:
+                    <input type="text" id="born_place" name="born_place" size="40">
+            </p>
+            <p class="input">
+                PROVINCIA (SIGLA):
+                    <input type="text" id="province" name="province" size="2" maxlength="2">
+                DATA DI NASCITA:    <!-- php make user choose a date 
+            ECHO <option value=$VALUE>$Day:-->
+                <select name="day"><option value="0">Day:</option>
+                    <?php echo generate_options(1,31) ?></select>
+                <select name="month"><option value="0">Month:</option>
+                    <?php echo generate_options(1,12,'callback_month') ?></select>
+                <select name="year"><option value="0">Year:</option>
+                    <?php echo generate_options(date('Y'),1900)?></select>
+            </p>
+
+            <input type="submit" id="submit" name="submit" value="Calcola il codice fiscale!">
+        </div>
+
+    </form>
+
+</body>
+</html>
+#}

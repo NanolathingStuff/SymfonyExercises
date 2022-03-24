@@ -27,7 +27,10 @@ class FiscalCodeController extends AbstractController
             //$entityManager->persist( $code ); //save
             $entityManager->flush();    //synchronizes the in-memory state of managed objects with the database.
 
-            return new Response('Fiscal code '.$code->getId().' has been successfully created.');
+            return new Response($twig->render('fiscal/code.html.twig', [
+                'fiscal_form' => $form->createView(),
+                'valid' => $code->getId(),
+            ]));
         }
 
         return new Response($twig->render('fiscal/code.html.twig', [

@@ -49,3 +49,33 @@ div.card_text{  /* TOP of the card */
     bottom:0;   
     right: 0.15%;    
 }
+/* Form customize */
+.submit{
+    font-size: 1.5em;
+    width: 100%;
+    height: 40px;  
+    color: #ffffff;
+    background-color: #169921;
+    position:absolute;
+    border-bottom-left-radius: 25px;
+    border-bottom-right-radius: 25px;
+    bottom:0;   
+    right: 0.15%;    
+}
+div.col{  
+    width: 100%;
+    margin-top: 4px;
+}
+.control-label{  
+    width: 80%; 
+    box-sizing: border-box; 
+    float: right;
+}
+.half-box{  
+    width: 50%; 
+    box-sizing: border-box; 
+    margin-left: 4em;
+}
+#multy_row_form{
+    float: left;
+}
