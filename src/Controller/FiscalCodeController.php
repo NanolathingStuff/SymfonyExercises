@@ -27,8 +27,6 @@ class FiscalCodeController extends AbstractController{
 
         if($form->isSubmitted() && $form->isValid()){
 
-            $fiscal_data = new FiscalData();
-
             //generate fiscal code
             $surname = $form->get('surname')->getData();
             $name = $form->get('name')->getData();
@@ -52,7 +50,22 @@ class FiscalCodeController extends AbstractController{
                 date_format($birth_day, 'm'), date_format($birth_day, 'd'), $city_code);
             $code = $container->calculate_code();
 
-            /*  TODO
+            //get IP address
+            $request = Request::createFromGlobals();
+            if(!empty($_SERVER['HTTP_CLIENT_IP'])){
+                //ip from share internet
+                $ip = $_SERVER['HTTP_CLIENT_IP'];
+            }elseif(!empty($_SERVER['HTTP_X_FORWARDED_FOR'])){
+                //ip pass from proxy
+                $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+            }else{
+                $ip = $_SERVER['REMOTE_ADDR'];
+            }    
+            if(!isset($ip))
+                $ip = $request->server->get('HTTP_HOST');   //my IP
+            //SAVE Code
+            $fiscal_data = new FiscalData();
+            
             $fiscal_data->setSurname($surname );
             $fiscal_data->setName($name);
             $fiscal_data->setGender($gender);
@@ -60,17 +73,20 @@ class FiscalCodeController extends AbstractController{
             $fiscal_data->setProvince($province);
             $fiscal_data->setBirthDay($birth_day);
             $fiscal_data->setCode($code);
-            $fiscal_data->setGenerationDate('Keyboard');
-            $fiscal_data->setIp('Keyboard');
-             */
+            $fiscal_data->setGenerationDate(new \DateTime());   //current datetime
+            $fiscal_data->setIp($ip);   
+            //dd($fiscal_data);
+
             $errors = $validator->validate($fiscal_data);
-            if (count($errors) > 0) {
+            if (count($errors) > 0 ) {
                 return new Response((string) $errors, 400);
             }
-            /*   
-            $entityManager->persist( $code ); //save
-            $entityManager->flush();    //synchronizes the in-memory state of managed objects with the database.
-            */
+            //if( $code != ''){   //if not error
+               
+                $entityManager->persist($fiscal_data); //save
+                $entityManager->flush();    //synchronizes the in-memory state of managed objects with the database.
+                /**/
+            //}
             return new Response($twig->render('fiscal/code.html.twig', [
                 'fiscal_form' => $form->createView(),
                 'valid' => $code,

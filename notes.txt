@@ -1,9 +1,10 @@
 ESERCIZI: 
-- replicare codice fiscale in symfony
++ replicare codice fiscale in symfony
     + usare database invece che files
     - ogni volta che qualcuno genera un codice fiscale --> salvalo (con tutti i dati), data generazione e ip dell'utente
-    - sistema problemi di eredtarietà
-        -quest sistema CSS
+    - sistema problemi di ereditarietà
+        + questo sistema CSS
+    - re-mirgate ListaComuniRepository per rimuovere funzioni
 
 REMEMBER TO symfony server:start
 
