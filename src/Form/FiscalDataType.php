@@ -27,8 +27,9 @@ class FiscalDataType extends AbstractType
             ->add('birth_day', DateType::class, [
                 'widget' => 'single_text',
                 'html5' => true,])  //DATA DI NASCITA:    <!-- php make user choose a date 
-            ->add('submit', SubmitType::class)
-        ;
+            ->add('submit', SubmitType::class, [
+                'label' => 'Calculate Code',
+                ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

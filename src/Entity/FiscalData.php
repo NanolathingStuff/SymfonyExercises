@@ -31,6 +31,15 @@ class FiscalData
     #[ORM\Column(type: 'date')]
     private $birth_day;
 
+    #[ORM\Column(type: 'string', length: 16, nullable: true)]
+    private $code;  //nullable in case of error
+
+    #[ORM\Column(type: 'date')]
+    private $generation_date;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $ip;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -107,4 +116,41 @@ class FiscalData
 
         return $this;
     }
+
+    public function getCode(): ?string
+    {
+        return $this->code;
+    }
+
+    public function setCode(string $code): self
+    {
+        $this->code = $code;
+
+        return $this;
+    }
+
+    public function getGenerationDate(): ?\DateTimeInterface
+    {
+        return $this->generation_date;
+    }
+
+    public function setGenerationDate(\DateTimeInterface $generation_date): self
+    {
+        $this->generation_date = $generation_date;
+
+        return $this;
+    }
+
+    public function getIp(): ?string
+    {
+        return $this->ip;
+    }
+
+    public function setIp(string $ip): self
+    {
+        $this->ip = $ip;
+
+        return $this;
+    }
+
 }
