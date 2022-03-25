@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Files\FiscalCode;   //custom class to calculate code
 use App\Entity\FiscalData;
+use App\Entity\ListaComuni;
 use App\Form\FiscalDataType;
 use Doctrine\Persistence\ManagerRegistry;   //access DB
 use Symfony\Component\Validator\Validator\ValidatorInterface;   //validate
@@ -36,18 +37,21 @@ class FiscalCodeController extends AbstractController{
             $province = $form->get('province')->getData();
             $birth_day = $form->get('birth_day')->getData();
 
-            //dd($surname, $name, $gender, $born_place, $birth_day);  //var_dump();
-            $query = "SELECT CodFisco FROM listacomuni WHERE Provincia = '".$province."' AND Comune = '".$born_place."';";
-            
-
-            $container = new FiscalCode($surname, $name, $gender, date_format($birth_day, 'Y'),
-                date_format($birth_day, 'm'), date_format($birth_day, 'd'), $born_place, $province);
-                //TODO TOFIX
-            //$code = $container->calculate_code();//TODO fix exception in the class
-
             //EntityManagerInterface = DB
             //The ManagerRegistry $doctrine argument tells Symfony to inject the Doctrine service into the controller method.
             $entityManager = $doctrine->getManager();   //gets Doctrine's entity manager object, which is the most important object in Doctrine. It's responsible for saving objects to, and fetching objects from, the database.
+            
+            $city = $doctrine->getRepository(ListaComuni::class)->findOneBy(['Comune' => $born_place, 'Provincia' => $province]);
+            if($city){  //found
+                $city_code = $city->getCodFisco();
+            }else{
+                $city_code = '';
+            }
+
+            $container = new FiscalCode($surname, $name, $gender, date_format($birth_day, 'Y'),
+                date_format($birth_day, 'm'), date_format($birth_day, 'd'), $city_code);
+            $code = $container->calculate_code();
+
             /*  TODO
             $fiscal_data->setSurname($surname );
             $fiscal_data->setName($name);
@@ -69,13 +73,13 @@ class FiscalCodeController extends AbstractController{
             */
             return new Response($twig->render('fiscal/code.html.twig', [
                 'fiscal_form' => $form->createView(),
-                'valid' => $code->getId()//$code
+                'valid' => $code,
             ]));
         }
 
         return new Response($twig->render('fiscal/code.html.twig', [
             'fiscal_form' => $form->createView(),
-            'valid' => '',
+            'valid' => 'NULL',
         ]));
     }
 }

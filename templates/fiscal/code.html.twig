@@ -3,6 +3,15 @@
 #}
 {% block stylesheets %}
     <link rel="stylesheet" type="text/css" href="/css/FiscalCode.css" /> 
+    <style> {# to change background color #}
+        {% if valid == 'NULL' %}
+            body {background-color: #000000;}
+        {% elseif valid %}
+            body {background-color: #16dd7a;}
+        {% else  %}
+             body {background-color: #d14b49;}
+        {% endif %}
+    </style>
 {% endblock %}
 
 {% block body %}
@@ -15,7 +24,7 @@
                 <p style="font-size: 1.0em; margin-right: 3px;">Calcola il codice fiscale online</p>
             </div>
 
-        {% if valid %}
+        {% if (valid and valid != 'NULL') %}
             <H3>CODICE FISCALE:  {{ valid }} </H3>
         {% endif %}
 

@@ -13,7 +13,7 @@
     {# conditional statement using % (remember spaces) #}
         {% if title %}
             <h1> Passed: {{ title }} </h1>
-
+            <p>INSERTED: </p>
             {% for key, value in results %}
                 ID : {{ key }}
                 {% for k, v in value %}

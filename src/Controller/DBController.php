@@ -24,28 +24,36 @@ class DBController extends AbstractController{
     public function index(ManagerRegistry $doctrine): Response {
 
         $entityManager = $doctrine->getManager();
-         //use codes [DB]
-        //CREATE TABLE IF NOT EXISTS listacomuni (Comune varchar(255), Provincia varchar(255), CodFisco varchar(255));
-        //LOAD DATA INFILE '/home/nanolathingstuff/demo_project/src/files/listacomuni.csv' into table listacomuni FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n' IGNORE 1 ROWS;
-        /*after movinf file:  LOAD DATA INFILE '/var/lib/mysql-files/listacomuni.csv' into table listacomuni 
-            FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n' IGNORE 1 ROWS;*/
-        /*$file = "../files/listacomuni.csv";
-        $query = "LOAD DATA INFILE '".$file."'
-            INTO TABLE listacomuni
-            FIELDS TERMINATED BY ','
-            OPTIONALLY ENCLOSED BY '\"' 
-            LINES TERMINATED BY ',,,\r\n'
-            IGNORE 1 LINES 
-            (Comune, Provincia, CodFisco)";*/
-        $file = "/home/nanolathingstuff/demo_project/src/Files/listacomuni.csv";    //App\Files
-        $result = $this->read_csv($file);
-        //dd(array_slice($result, 1, count($result)-2));
 
+        $file = "/home/nanolathingstuff/demo_project/src/Files/listacomuni.csv";    //App\Files
+        $result1 = $this->read_csv($file);
+        //dd(array_slice($result, 1, count($result)-2));
+        $repository = $doctrine->getRepository(ListaComuni::class);
+        $result = $repository->findAll();
+        //dd($result);
+        $offset = count($result) + 1; //get the ones not already inserted
+        $data = array_slice($result1, $offset);
+        //dd(array_slice($result, 4000), $data);
+        foreach ($data as $code) {
+            if(is_array($code)){
+                $product = new ListaComuni();
+                $product->setComune($code[0]);
+                $product->setProvincia($code[1]);
+                $product->setCodFisco($code[2]);
+
+                //dd($product->getComune(), $product->getProvincia(),$product->getCodFisco());
+                // tell Doctrine you want to (eventually) save the Product (no queries yet)
+                $entityManager->persist($product);
+
+                // actually executes the queries (i.e. the INSERT query)
+                $entityManager->flush();
+            }
+        }
         //path to page to render, use single quotes (' ') for variables
         return $this->render('db/database.html.twig', [
             'error' => '',
             'title' => 'movie',
-            'results' => array_slice($result, 1, count($result)-2),
+            'results' => $data,
         ]);
     }
     //connect to DATABASE_URL="mysql://root:password54321@127.0.0.1:3306/fiscal_code?serverVersion=5.7&charset=utf8mb4"
@@ -77,5 +85,7 @@ class DBController extends AbstractController{
             'title' => 'movie',
             'results' => array_slice($result, 1, count($result)-2),
         ]);
-    }*/
+    }
+    
+    */
 }

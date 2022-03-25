@@ -94,7 +94,7 @@ class ListaComuniRepository extends ServiceEntityRepository
     /**
      * return int
      */
-    public function NumberOfRows(): array{
+    public function NumberOfRows(){
         $entityManager = $this->getEntityManager();
 
         $query = $entityManager->createQuery(
@@ -105,4 +105,22 @@ class ListaComuniRepository extends ServiceEntityRepository
         // returns an array of  objects
         return $query->getResult();
     }
+    /**
+     * @return ListaComuni[]
+     */
+    /*public function findCityCode(string $province, string $city): array{
+        // automatically knows to select ListaComuni
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT cod_fisco
+            FROM lista_comuni
+            WHERE provincia = :province
+            AND comune = :city'
+        )->setParameter('province', strtoupper($province))->setParameter('city', ucwords($city));
+
+        // returns an array of  objects
+        return $query->getResult();
+
+    }*/
 }

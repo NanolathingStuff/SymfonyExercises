@@ -17,17 +17,15 @@ class FiscalCode{
     private $Surname;
     private $Name;
     private $City;
-    private $Province;
     private $Day;
     private $Month;
     private $Year; 
     /* Class functions */
-    function __construct($Surname, $Name, $Gender, $Year, $Month, $Day, $From, $Province){ //no need of setters for now
+    function __construct($Surname, $Name, $Gender, $Year, $Month, $Day, $From){ //no need of setters for now
         $this->Gender = $Gender;
         $this->Surname = $Surname;
         $this->Name = $Name;
         $this->City = $From;
-        $this->Province = $Province;
         $this->Day = $Day;
         $this->Month = $Month;
         $this->Year =$Year; 
@@ -41,11 +39,8 @@ class FiscalCode{
     public function getName() {
         return $this->Name;
     }
-    public function getCity() {
+    public function getCityCode() {
         return $this->City;
-    }
-    public function getProvince() {
-        return $this->Province;
     }
     public function getDay() {
         return $this->Day;
@@ -77,19 +72,6 @@ class FiscalCode{
         return  trim(range('A','Z', ($sum%26))[1]); //no need to run all array
     }
     
-    private function codice_comune($comune, $sigla){   //from https://dait.interno.gov.it/territorio-e-autonomie-locali/sut/elenco_codici_comuni.php 
-        $filename = "../codes/listacomuni.csv"; //downloaded http://lab.comuni-italiani.it/download/comuni.html
-        if(file_exists($filename)){
-            $file = file($filename);
-            foreach($file as $row){
-                $data = explode(',', $row);
-                if(strtolower($comune) == strtolower($data[0]) && strtolower($sigla) == strtolower($data[1]))
-                    return trim($data[2]); //file is modified as: Comune; Provincia; Codice
-            }
-        }else{
-            return 0;   //error file not found
-        }return 1;  //error town not found
-    }
     private function name_code(String $nome, Bool $cognome=false){
         $tmp = '';
         preg_match_all("/[^aeiouAEIOU\s]/", $nome, $consonanti);    
@@ -113,7 +95,7 @@ class FiscalCode{
     public function calculate_code(){
         //control errors: all parameters required
         if($this->getSurname() == '' || $this->getName() == ''|| $this->getYear() == '' || $this->getMonth() == '' ||
-            $this->getDay() == '' || $this->getCity() == '' || $this->getProvince() == ''){
+            $this->getDay() == '' || $this->getCityCode() == '' ){
                 return '';//throw new \Exception("Error: missing parameter!");  //TODO fix this
         }//else
         if(preg_match("/[^a-zA-Z\s]/", $this->getName())){
@@ -136,13 +118,11 @@ class FiscalCode{
         } else{ 
             $tmp .= strval($this->getDay() + 40);
         }
-        $townCode = ''; //$this->codice_comune($this->getCity(), $this->getProvince());
-        $tmp .= $townCode;  //Codice Belfiore of the town (4 characters)
-        if ($townCode === 0){   //error
-            throw new \Exception("Error: File not found"); //TODO fix this
-        }elseif ($townCode === 1){   //error
-            throw new \Exception("Error: Codice Comune not found"); //TODO fix this
+
+        if($this->getCityCode() == ''){
+            return '';
         }else{
+            $tmp .= $this->getCityCode();
             $tmp = strtoupper($tmp);    //array-dict has only uppercase letters
             $tmp .=  $this->control_code($tmp); // Control character, to verify if the code is calculated correctly.
         }      
