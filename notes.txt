@@ -1,10 +1,10 @@
 ESERCIZI: 
 + replicare codice fiscale in symfony
     + usare database invece che files
-    - ogni volta che qualcuno genera un codice fiscale --> salvalo (con tutti i dati), data generazione e ip dell'utente
+    + ogni volta che qualcuno genera un codice fiscale --> salvalo (con tutti i dati), data generazione e ip dell'utente
     - sistema problemi di ereditarietà
         + questo sistema CSS
-    - re-mirgate ListaComuniRepository per rimuovere funzioni
+    + re-mirgate ListaComuniRepository per rimuovere funzioni
 
 REMEMBER TO symfony server:start
 
@@ -168,3 +168,4 @@ USE:
     symfony console make:migration  : to use the created tables (src/Entity/CLASSES.php) 
     symfony console doctrine:migrations:migrate : to initialize the created tables (src/Entity/CLASSES.php) 
     symfony console make:form NAMEFormType TABLE : to create a form based on entity
+    remake migrations for every change
