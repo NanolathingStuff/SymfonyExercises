@@ -45,7 +45,7 @@ class DBController extends AbstractController{
             $value = $form->get('value')->getData();
 
             //foreach ($data as $code) {
-            for ($i = 0; ($i < $value && $i < count($data)); $i++) {
+            for ($i = 0; ($i < $value && $i < count($data)-1); $i++) {
                 $code = $data[$i];
 
                 if(is_array($code)){
@@ -65,7 +65,7 @@ class DBController extends AbstractController{
             return $this->render('db/insert.html.twig', [
                 'error' => '',
                 'title' => 'movie',
-                'results' => $data,
+                'results' => array_slice($data, 0, $i),
                 'form' => $form->createView(),
                 'count' => $i,
             ]);

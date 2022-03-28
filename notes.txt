@@ -170,9 +170,15 @@ USE:
     symfony console doctrine:migrations:migrate : to initialize the created tables (src/Entity/CLASSES.php) 
     symfony console make:form NAMEFormType TABLE : to create a form based on entity
     remake migrations for every change
+    php bin/console dbal:run-sql 'QUERY'    : execute sql command
 
 TEST: 
     - composer require --dev symfony/test-pack
     - php bin/phpunit   : This command automatically runs your application tests. Each test is a PHP class ending with "Test" (e.g. BlogControllerTest) that lives in the tests/ directory of your application.
     - composer require --dev dama/doctrine-test-bundle  : uses a clever trick: it begins a database transaction before every test and rolls it back automatically after the test finishes to undo all changes. 
+EXCEPTIONS: 
+    Rely on the standard Symfony method for overriding templates by putting custom templates in the templates/bundles/TwigBundle/Exception/ directory that live inside a bundle.
+CONSOLE: 
+    The Symfony framework provides lots of commands through the bin/console script 
+    Commands are defined in PHP classes extending Command. ES at https://symfony.com/doc/current/console.html
     

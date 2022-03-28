@@ -1,0 +1,36 @@
+{# /templates/ball/ball.html.twig #}
+{% extends "base.html.twig" %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="/css/MovingBall.css" /> 
+    {#<style> </style> #}
+{% endblock %}
+
+{% block body %}
+    <H1> Moving Ball Game </H1>
+    <div> 
+        {{ form_start(square_form) }}
+            <div class="my-custom-class-for-errors">
+                {{ form_errors(square_form) }}
+            </div>
+            <div class="row">
+                {{ form_rest(square_form) }}   {#  autocomplete form   #}
+            </div>
+        {{ form_end(square_form) }}
+    <div id="box" class="square" style="float: left;">
+        <div id="ballDiv">  {# style="left: <?php echo $ball->getLeft() ?>px; top: <?php echo $ball->getTop()?>px"  #}
+            {# <img id='myBall' src=<?php echo $ball->getImg() ?> /> #
+        </div>
+        <div id="obstacleDiv">
+        
+            {# <img id='myObstacle' src=<?php echo $obj->getImg() ?> /> #}
+        </div>
+    </div>
+
+  <div class='control'>
+  {# TODO #}
+  </div>
+
+</div>
+
+{% endblock %}

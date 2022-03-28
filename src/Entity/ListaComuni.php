@@ -8,10 +8,9 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: ListaComuniRepository::class)]
 class ListaComuni
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
+    /*#[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private $id;
+    private $id;*/
 
     #[ORM\Column(type: 'string', length: 255)]
     private $Comune;
@@ -19,7 +18,8 @@ class ListaComuni
     #[ORM\Column(type: 'string', length: 2)]
     private $Provincia;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Id]
+    #[ORM\Column(type: 'string', length: 255, nullable: false)]
     private $CodFisco;
 
     public function getId(): ?int

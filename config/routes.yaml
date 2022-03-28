@@ -16,3 +16,7 @@ app_test:
     methods:    GET|HEAD
     defaults:
         page: 1  
+
+app_ball:
+    path: /ball/ball
+    controller: App\Controller\BallController::create

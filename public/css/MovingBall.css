@@ -1,0 +1,121 @@
+h1{
+    color:#24ceb1;
+}
+div.square{ 
+    border: solid 10px rgb(170, 100, 177);
+    width: 600px; 
+    height: 600px; 
+    background-color: rgb(190, 222, 226);
+    position: relative;
+}
+div.control{
+    position: absolute;
+    left: 750px;  
+    border: 5px;
+    padding: 0px; 
+}
+img.command {
+    width: 150px;
+    height: 150px;
+    border: 1px solid #ddd;
+    border-width: 1px;
+    padding: 1px; 
+    border-radius: 4px;
+}
+
+#ballDiv{ 
+    width: 50px; 
+    height: 50px;
+    position: relative;
+}
+#obstacleDiv{ 
+    width: 40px; 
+    height: 40px;
+    position: relative;
+}
+#myBall{
+    position: relative;
+    width: 50px; /* same as parent */
+    height: 50px;
+}
+#myObstacle{
+    position: relative;
+    width: 40px; /* same as parent */
+    height: 40px;
+
+}
+#text{  /* debug paragraph style */
+    background-color: #8080FF;
+    color: #00EE2A;/* https://rgbcolorcode.com/ */
+}
+form > input + .row {
+	display:inline-block;   /*input form on same line */
+}
+/*<?php
+    header('Content-type: text/css');
+    $ball_size = $_GET['ball_size'];
+    $obstacle_size = $_GET['obstacle_size'];
+    //TODO: set div.square sizes; get why can't pass sizes with <?php echo $ball_size >
+    $ball_left = $_GET['ball_left']; 
+    $ball_top = $_GET['ball_top'];
+    $obstacle_left = $_GET['obstacle_left']; 
+    $obstacle_top = $_GET['obstacle_top'];
+    $ball_img = $_GET['ball_img'];
+    $obstacle_img = $_GET['obstacle_img'];
+    $width = $_GET['width'];
+    $height = $_GET['height'];
+?>
+h1{
+    color:green;
+}
+div.square{ 
+    border: solid 14px #888;
+    width: <?php echo $width ?>px; 
+    height: <?php echo $height ?>px; 
+    background-color: powderblue;
+    position: relative;
+}
+div.control{
+    position: absolute;
+    left: 750px;  
+    border: 5px;
+    padding: 0px; 
+}
+img.command {
+    width: 150px;
+    height: 150px;
+    border: 1px solid #ddd;
+    border-width: 1px;
+    padding: 1px; 
+    border-radius: 4px;
+}
+
+#ballDiv{ 
+    width: <?php echo $ball_size ?>px; 
+    height: <?php echo $ball_size ?>px;
+    position: relative;
+}
+#obstacleDiv{ 
+    width: <?php echo $obstacle_size ?>px; 
+    height: <?php echo $obstacle_size ?>px;
+    position: relative;
+    left: <?php echo $obstacle_left ?>px; 
+    top: <?php echo ($obstacle_top - $ball_size) ?>px;
+}
+#myBall{
+    position: relative;
+    width: <?php echo $ball_size ?>px;
+    height: <?php echo $ball_size ?>px;
+}
+#myObstacle{
+    position: relative;
+    width: <?php echo $obstacle_size ?>px; 
+    height: <?php echo $obstacle_size ?>px;
+
+}
+#text{  
+    background-color: #8080FF;
+    color: #00EE2A;
+}
+form > input + .row {
+	display:inline-block;  
