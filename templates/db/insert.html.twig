@@ -13,6 +13,15 @@
     {# conditional statement using % (remember spaces) #}
         {% if title %}
             <h1> Passed: {{ title }} </h1>
+        {% else %}
+            <p>No parameter passed</p>
+        {% endif %}
+
+        {{ form_start(form) }}
+            {{ form_rest(form) }}
+        {{ form_end(form) }}
+        {% if count and results %}
+            <p>Inserted</p>
 
             {% for key, value in results %}
                 ID : {{ key }}
@@ -21,10 +30,8 @@
                 {% endfor %}
                 <br>
             {% endfor %}
-
-        {% else %}
-            <p>No parameter passed</p>
         {% endif %}
+       
     </div>
  {% endif %}
 {% endblock %}

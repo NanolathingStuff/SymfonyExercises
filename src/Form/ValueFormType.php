@@ -2,20 +2,18 @@
 
 namespace App\Form;
 
-use App\Entity\Subscriber;
+use App\Entity\Value;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
-class SubscriberFormType extends AbstractType
-{
+class ValueFormType extends AbstractType{
+    /**Form to insert a value */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('firstName')
-            ->add('lastName')
-            ->add('email')
+            ->add('value')
             ->add('submit', SubmitType::class)
         ;
     }
@@ -23,7 +21,7 @@ class SubscriberFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Subscriber::class,
+            'data_class' => Value::class,
         ]);
     }
 }
