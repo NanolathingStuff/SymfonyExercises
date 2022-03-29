@@ -17,7 +17,7 @@
                 {{ form_rest(square_form) }}   {#  autocomplete form   #}
             </div>
         {{ form_end(square_form) }}
-    <div id="box" class="square" style="float: left;">
+    <div id="box" class="square" style="width: {{square_width}}px; height: {{square_height}}px; ">
         <div id="ballDiv">  {# style="left: <?php echo $ball->getLeft() ?>px; top: <?php echo $ball->getTop()?>px"  #}
             {# <img id='myBall' src=<?php echo $ball->getImg() ?> /> #
         </div>
@@ -28,7 +28,27 @@
     </div>
 
   <div class='control'>
-  {# TODO #}
+    <div>
+        <!--SPACE-->
+        <button type="submit" name="command" value="goUp" style="margin-bottom: 4px; margin-left: 170px;">
+            <img src="/Img/arrow-up.jpeg" class='command' /></button>
+      </div>
+      <div>
+        <button type="submit" name="command" value="goLeft">
+            <img src="/Img/arrow-left.jpeg" class='command' /></button>
+          <button type="submit" name="command" value="goDown" > 
+            <img src="/Img/arrow-down.jpeg" class='command' /></button>
+        <button type="submit" name="command" value="goRight">
+            <img src="/Img/arrow-right.jpeg" class='command' /></button>  
+      </div> 
+      <div style="margin-top: 10px; padding: 4px;" > <!--Padding top-->
+          <button type="submit" name="command" value="set_ball">
+            <img src="/Img/ball.jpeg" class='command' /></button>
+          <button type="submit" name="command" value="set_bowling_ball">
+            <img src="/Img/bowling_ball.jpeg" class='command' /></button>
+          <button type="submit" name="command" value="set_silver_ball">
+            <img src="/Img/silver_ball.jpeg" class='command' /></button>
+      </div> 
   </div>
 
 </div>
