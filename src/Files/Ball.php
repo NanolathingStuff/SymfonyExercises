@@ -304,7 +304,7 @@ class CommandInvoker{
 }
 
 class Obstacle{  
-    private $image = "../img/pole.jpeg";
+    private $image = "/Img/pole.jpeg";
     private $left;
     private $top;
     private $count;
