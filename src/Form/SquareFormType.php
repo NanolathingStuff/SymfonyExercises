@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Square;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -17,11 +18,13 @@ class SquareFormType extends AbstractType
         $builder
             ->add('width', IntegerType::class, array(
                 'label' => 'Width',
-                'data' => 600   //default value
+                'data' => 600,   //default value
+                'attr' => array('min' => 100, 'max'=> 800)   //min and max
            ))
             ->add('height', IntegerType::class, array(
                 'label' => 'Height',
-                'data' => 600
+                'data' => 600,
+                'attr' => array('min' => 100, 'max'=> 800)   //min and max
            ))
             ->add('submit', SubmitType::class)
         ;
@@ -31,6 +34,7 @@ class SquareFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Square::class,
+            'square' => null,
         ]);
     }
 }

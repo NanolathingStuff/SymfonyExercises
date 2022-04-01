@@ -3,7 +3,12 @@
 
 {% block stylesheets %}
     <link rel="stylesheet" type="text/css" href="/css/MovingBall.css" /> 
-    <script src="/js/ball.js" defer></script>
+{% endblock %}
+
+{% block javascripts %}
+    {# TODO #}
+    <script src="/js/ball.js"></script>
+    <script>alertWorld("world!")</script>
 {% endblock %}
 
 {% block body %}
@@ -35,12 +40,13 @@
             <img id='myObstacle' src={{obj}} /> 
         </div>
     </div>
-
-    <div class='control'>
+    
+    <div id='control' class='control'>
         <div>
-            <!--SPACE-->
-            <button type="submit" name="command" value="goUp" style="margin-bottom: 4px; margin-left: 170px;">
-                <img src="/Img/arrow-up.jpeg" class='command' /></button>
+        <!--SPACE -->
+            <button type="submit" name="command" value="goUp" onclick="myFunction('control')" style="margin-bottom: 4px; margin-left: 170px;">
+                <img src="/Img/arrow-up.jpeg" class='command' />
+            </button>  
         </div>
         <div>
             <button type="submit" name="command" value="goLeft">

@@ -182,3 +182,8 @@ CONSOLE:
     The Symfony framework provides lots of commands through the bin/console script 
     Commands are defined in PHP classes extending Command. ES at https://symfony.com/doc/current/console.html
     
+Javascript:
+    - create file.js 
+    - in webpack.config.js:
+        - .addEntry('FILENAME', 'PATH')
+    - compile: npm run dev

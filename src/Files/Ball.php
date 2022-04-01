@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Files;    //To be used by other files (like BallController)
+
 //factory pattern and file config
 class SquareFactory{
     private $array_assoc;
@@ -9,16 +10,17 @@ class SquareFactory{
     private $obstacle;
 
     public function __construct($ball_top=NULL, $ball_left=NULL, $ball_img=NULL, 
-        $obstacle_top=NULL, $obstacle_left=NULL, $square_width = 600, $square_height = 550) {
+        $obstacle_top=NULL, $obstacle_left=NULL, $square_width = 600, $square_height = 600) {
         
         $this->square = new Square($square_width, $square_height);
         $this->setBall($ball_top, $ball_left, $ball_img);
         $this->obstacle = new Obstacle(0, 0);  //TODO more than 1?
+        //since they are 2 divs, obstacle is by default put below the ball (left if you keep only the images)
         if(!isset($obstacle_top)){
-            $obstacle_top = rand(0, $square_height - $this->obstacle->getSize()); //-size
+            $obstacle_top = rand(0, $square_height - $this->obstacle->getSize()*2); //-size
         }
         if(!isset($obstacle_left)){
-            $obstacle_left = rand(0, $square_width- $this->obstacle->getSize());
+            $obstacle_left = rand(0, $square_width - $this->obstacle->getSize());
         }
         //if resized square too small
         if( ($square_width < ($this->ball->getLeft() + $this->ball->getSize())) || ($square_height < ($this->ball->getTop() + $this->ball->getSize())) ){
@@ -31,7 +33,7 @@ class SquareFactory{
         $this->obstacle->setTop($obstacle_top);
         $this->obstacle->setLeft($obstacle_left); 
         //TODO find a way to parse from YML
-        $this->setCommandsFromXML();
+        //$this->setCommandsFromXML();
     }
 
     public function setBall($top, $left, $img){  
