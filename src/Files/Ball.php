@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Files;    //To be used by other files (like BallController)
+use App\Files; 
 
 //factory pattern and file config
 class SquareFactory{
