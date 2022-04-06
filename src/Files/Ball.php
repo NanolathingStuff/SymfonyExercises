@@ -35,6 +35,8 @@ class SquareFactory{
         $this->obstacle->setLeft($obstacle_left); 
         //TODO find a way to parse from YML
         //$this->setCommandsFromXML();
+        $this->setCommands();
+
     }
 
     public function setBall($top, $left, $img){  

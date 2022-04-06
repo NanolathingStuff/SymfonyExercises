@@ -40,8 +40,22 @@
             <img id='myObstacle' src={{obj}} /> 
         </div>
     </div>
-    
+
     <div id='control' class='control'>
+        <form method="POST">
+
+    <!-- Ball--> 
+    <input name="top" type="hidden" value="{{ball_top}}" /> <!-- not shown input --> 
+    <input name="left" type="hidden" value="{{ball_left}}" /> <!-- for pass variables declared top page -->  
+    <input name="img" type="hidden" value="{{img}}" />
+    <!-- Obstacle --> 
+    <input name="obstacle_top" type="hidden" value="{{obstacle_top}}" /> 
+    <input name="obstacle_left" type="hidden" value="{{obstacle_left}}" /> 
+    <input name="obstacle_count" type="hidden" value="{{count}}" />
+    <!-- Square --> 
+    <input name="width" type="hidden" value="{{square_width}}" /> 
+    <input name="height" type="hidden" value="{{square_height}}" /> 
+
         <div>
         <!-- SPACE  -->
             <button type="submit" name="command" value="goUp" style="margin-bottom: 4px; margin-left: 170px;">
@@ -65,6 +79,7 @@
             <button type="submit" name="command" value="set_silver_ball">
                 <img src="/Img/silver_ball.jpeg" class='command' /></button>
         </div> 
+        </form>
     </div>
 
     </div>

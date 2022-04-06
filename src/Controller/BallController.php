@@ -8,36 +8,20 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use App\Form\SquareFormType;
 use App\Form\CommandForm;
-use Symfony\Component\Cache\Adapter\FilesystemAdapter;
+use App\Files\CommandInvoker;  
 
 class BallController extends AbstractController{
 
     //#[Route('/ball/ball', name:"ball")]   //http://127.0.0.1:8000/ball/ball 
     public function create(Request $request): Response{
 
-        $cache = new FilesystemAdapter();   //initialize cache manager
-        $factory = new SquareFactory(); //to avoid error, will be overwritten
-        //retrieve saved item
-        if ($cache->hasItem('factory')){
-            $cachedObject = $cache->getItem('factory');
-            $factory = $cachedObject->get();    //get value
-            //dd('cached', $cachedObject, $factory);
-        }else{
-            //randomize starting ball
-            $ball_top = rand(0, (int)( 600 - 50)/10) * 10;   // must be multiple of 10
-            $ball_left = rand(0, (int)( 600 - 50)/10) * 10; //  $this->ball->getSize()
+        //randomize starting ball
+        $ball_top = rand(0, (int)( 600 - 50)/10) * 10;   // must be multiple of 10
+        $ball_left = rand(0, (int)( 600 - 50)/10) * 10; //  $this->ball->getSize()
 
-            $factory = new SquareFactory($ball_top, $ball_left); //, '/Img/ball.jpeg', $obstacle_top, $obstacle_left, $width, $height
-            $ball = $factory->getBall();//new Ball($ball_left, $ball_top);
-            $ball->setImg('/Img/ball.jpeg');
-            // store values
-            $savedObj = $cache->getItem('factory');
-            if (!$savedObj->isHit()){
-                $savedObj->set($factory);
-                $cache->save($savedObj);
-            }
-            //dd('uncached', $factory);
-        }
+        $factory = new SquareFactory($ball_top, $ball_left); //, '/Img/ball.jpeg', $obstacle_top, $obstacle_left, $width, $height
+        $ball = $factory->getBall();//new Ball($ball_left, $ball_top);
+        $ball->setImg('/Img/ball.jpeg');
 
         $ball = $factory->getBall();
         $square = $factory->getSquare();
@@ -50,22 +34,51 @@ class BallController extends AbstractController{
         $button_form = $this->createForm(CommandForm::class);
         $button_form->handleRequest($request);
 
+        //get command
+        if(isset($_POST) && count($_POST) > 1){ //symfony form return array(1) { ["square_form"]=> array(4)
+            var_dump($_POST);   printf(count($_POST));
+
+            $ball->setLeft($_POST['left']);
+            $ball->setTop($_POST['top']);
+            $ball->setImg($_POST['img']);
+            $obj->setLeft($_POST['obstacle_left']);
+            $obj->setTop($_POST['obstacle_top']);
+            $obj->setCount($_POST['obstacle_count']);
+            $square->setWidth($_POST['width']);
+            $square->setHeight($_POST['height']);
+
+            //TODO
+            //check if hit obstacle
+            if ($factory->checkCollision()){ 
+                $count = 5;
+            }else{
+                if (isset($_GET['obstacle_count'])){
+                if($_GET['obstacle_count'] > 0){
+                    $count = $_GET['obstacle_count']-1; 
+                }else{
+                    $count = 0;
+                }
+                }}
+            $obj->setCount($count);
+  
+            /*control section*/
+            if (isset($_POST["command"])){  //movement
+                //try{
+                $command = $factory->getCommands()[$_POST["command"]];
+                $invoker = new CommandInvoker(new $command($ball, ($obj->getCount()>0), 
+                    [$square->getWidth()-$ball->getSize(), $square->getHeight()-$ball->getSize()])); //change this part if you implement new commands
+                $invoker->handle(); //
+                /*}catch(Exception $exception) {
+                    echo "Unknown Command error: " . $exception->getMessage() . '<br>';
+                }*/
+            }
+        }
         //submission code
         if($square_form->isSubmitted() && $square_form->isValid()){
             //$content = $request->getContent();
             //dd( $demoString->get(), $content, $square_form->getData());
 
-            //get saved factory
-            $cachedObject = $cache->getItem('factory');
-            $factory = $cachedObject->get();    //get value
-            // delete all items
-            $cache->clear();
-            // store new values
-            $savedObj = $cache->getItem('factory');
-            if (!$savedObj->isHit()){
-                $savedObj->set($factory);
-                $cache->save($savedObj);
-            }
+            //TODO get saved factory
 
             $width = $square_form->get('width')->getData();
             $height = $square_form->get('height')->getData();
@@ -94,7 +107,6 @@ class BallController extends AbstractController{
               
             return $this->render('ball/ball.html.twig', [
                 'square_form' => $square_form->createView(),    //necessary function to create the form in the twig
-                'button_form' => $button_form->createView(),    
                 'square_width' => $square->getWidth(),
                 'square_height' => $square->getHeight(),  
                 'obstacle_top' => $obj->getTop(),  
@@ -103,29 +115,13 @@ class BallController extends AbstractController{
                 'ball_left' => $ball->getLeft(),  
                 'img' => $ball->getImg(),
                 'obj' => $obj->getImg(),
+                'count'=> $obj->getCount(),
             ]);
         }
 
-        if($button_form->isSubmitted() && $button_form->isValid()){
-            //dd($button_form->getData(), $request->getContent());
-
-            return $this->render('ball/ball.html.twig', [
-                'square_form' => $square_form->createView(),    //necessary function to create the form in the twig
-                'button_form' => $button_form->createView(),    
-                'square_width' => $square->getWidth(),
-                'square_height' => $square->getHeight(),  
-                'obstacle_top' => $obj->getTop(),  
-                'obstacle_left' => $obj->getLeft(),  
-                'ball_top' => $ball->getTop(),  
-                'ball_left' => $ball->getLeft(),  
-                'img' => $ball->getImg(),
-                'obj' => $obj->getImg(),
-            ]);
-        }
         //default render
         return $this->render('ball/ball.html.twig', [
             'square_form' => $square_form->createView(),    //necessary function to create the form in the twig
-            'button_form' => $button_form->createView(),    
             'square_width' => $square->getWidth(),
             'square_height' => $square->getHeight(),  
             'obstacle_top' => $obj->getTop(),  
@@ -134,6 +130,7 @@ class BallController extends AbstractController{
             'ball_left' => $ball->getLeft(),  
             'img' => $ball->getImg(),
             'obj' => $obj->getImg(),
+            'count'=> $obj->getCount(),
         ]);
     }
 }
