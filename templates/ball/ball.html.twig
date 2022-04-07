@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block javascripts %}
-    {# TODO #}
+   
     <script src="/js/ball.js"></script>
     <script>alertWorld("world!")</script>
 {% endblock %}
@@ -36,7 +36,7 @@
         <div id="ballDiv"  style="left: {{ball_left}}px; top: {{ball_top}}px"  >
              <img id='myBall' src={{ img }} /> 
         </div>
-        <div id="obstacleDiv" style="left: {{obstacle_top}}px; top: {{obstacle_top}}px" >
+        <div id="obstacleDiv" style="left: {{obstacle_left}}px; top: {{obstacle_top - 50}}px" > {# is putted down by ball size #}
             <img id='myObstacle' src={{obj}} /> 
         </div>
     </div>

@@ -8,7 +8,15 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use App\Form\SquareFormType;
 use App\Form\CommandForm;
-use App\Files\CommandInvoker;  
+use App\Files\CommandInvoker;
+use App\Files\goUpCommand;
+use App\Files\goDownCommand;
+use App\Files\goLeftCommand;
+use App\Files\goRightCommand;
+use App\Files\set_ballCommand;
+use App\Files\set_bowling_ballCommand;
+use App\Files\set_silver_ballCommand;
+
 
 class BallController extends AbstractController{
 
@@ -36,7 +44,7 @@ class BallController extends AbstractController{
 
         //get command
         if(isset($_POST) && count($_POST) > 1){ //symfony form return array(1) { ["square_form"]=> array(4)
-            var_dump($_POST);   printf(count($_POST));
+            //var_dump($_POST);   printf(count($_POST));
 
             $ball->setLeft($_POST['left']);
             $ball->setTop($_POST['top']);
@@ -47,28 +55,31 @@ class BallController extends AbstractController{
             $square->setWidth($_POST['width']);
             $square->setHeight($_POST['height']);
 
-            //TODO
             //check if hit obstacle
             if ($factory->checkCollision()){ 
                 $count = 5;
             }else{
-                if (isset($_GET['obstacle_count'])){
-                if($_GET['obstacle_count'] > 0){
-                    $count = $_GET['obstacle_count']-1; 
+                if($_POST['obstacle_count'] > 0){
+                    $count = $_POST['obstacle_count']-1; 
                 }else{
                     $count = 0;
                 }
-                }}
+            }
             $obj->setCount($count);
   
-            /*control section*/
+            /*control section*///TODO
             if (isset($_POST["command"])){  //movement
                 //try{
-                $command = $factory->getCommands()[$_POST["command"]];
-                $invoker = new CommandInvoker(new $command($ball, ($obj->getCount()>0), 
-                    [$square->getWidth()-$ball->getSize(), $square->getHeight()-$ball->getSize()])); //change this part if you implement new commands
-                $invoker->handle(); //
-                /*}catch(Exception $exception) {
+                $commands = $this->generateCommands($ball, ($obj->getCount()>0), [$square->getWidth()-$ball->getSize(), $square->getHeight()-$ball->getSize()]);
+                $command = $commands[$_POST["command"]];//$factory->getCommands()[$_POST["command"]];
+                /*if($_POST["command"] == "goUp")  $ball->moveUp();
+                if($_POST["command"] == "goDown")  $ball->moveDown();
+                if($_POST["command"] == "goLeft")  $ball->moveLeft();
+                if($_POST["command"] == "goRight")  $ball->moveRight();*/
+
+                $invoker = new CommandInvoker($command); //change this part if you implement new commands
+                $invoker->handle(); /*
+                }catch(Exception $exception) {
                     echo "Unknown Command error: " . $exception->getMessage() . '<br>';
                 }*/
             }
@@ -79,7 +90,6 @@ class BallController extends AbstractController{
             //dd( $demoString->get(), $content, $square_form->getData());
 
             //TODO get saved factory
-
             $width = $square_form->get('width')->getData();
             $height = $square_form->get('height')->getData();
 
@@ -132,6 +142,19 @@ class BallController extends AbstractController{
             'obj' => $obj->getImg(),
             'count'=> $obj->getCount(),
         ]);
+    }
+
+    //TODO fix this in a sensate manner
+    public function generateCommands($ball, $bouncing=FALSE, array $max=[]){
+        return array(
+            'goUp' => new goUpCommand($ball,  $bouncing, $max),
+            'goDown' => new goDownCommand($ball,  $bouncing, $max),
+            'goLeft' => new goLeftCommand($ball,  $bouncing, $max),
+            'goRight' => new goRightCommand($ball,  $bouncing, $max),
+            'set_ball' => new set_ballCommand($ball,  $bouncing, $max),
+            'set_bowling_ball' => new set_bowling_ballCommand($ball,  $bouncing, $max),
+            'set_silver_ball' => new set_silver_ballCommand($ball,  $bouncing, $max), 
+        );
     }
 }
 

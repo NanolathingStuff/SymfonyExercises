@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Files;    //To be used by other files (like BallController)
-use App\Files; 
 
 //factory pattern and file config
 class SquareFactory{
@@ -196,7 +195,7 @@ class set_ballCommand implements Command{
     }
 
     public function execute(){
-        $this->ball->setImg("../img/ball.jpeg");
+        $this->ball->setImg("/Img/ball.jpeg");
     }
 }
 class set_bowling_ballCommand implements Command{
@@ -208,7 +207,7 @@ class set_bowling_ballCommand implements Command{
     }
 
     public function execute(){
-        $this->ball->setImg("../img/bowling_ball.jpeg");
+        $this->ball->setImg("/Img/bowling_ball.jpeg");
     }
 }
 class set_silver_ballCommand implements Command{
@@ -220,7 +219,7 @@ class set_silver_ballCommand implements Command{
     }
 
     public function execute(){
-        $this->ball->setImg("../img/silver_ball.jpeg");
+        $this->ball->setImg("/Img/silver_ball.jpeg");
     }
 }
 
